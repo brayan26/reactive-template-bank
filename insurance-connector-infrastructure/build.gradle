@@ -1,0 +1,17 @@
+ext {
+    awsSdkVersion = '2.17.0'
+    mapStructVersion = '1.5.3.Final'
+}
+dependencies {
+    implementation project(':insurance-connector-domain')
+    // Mappers
+    implementation "org.mapstruct:mapstruct:$mapStructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+    //Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.5.0'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+
+}

@@ -1,0 +1,16 @@
+apply plugin: 'pmd'
+
+pmd {
+    ignoreFailures = false
+    consoleOutput = true
+    toolVersion = "6.44.0"
+    ruleSetFiles = files("$rootDir/gradle/code-quality/config/pmd/pmd.xml")
+    ruleSets = []
+}
+
+tasks.withType(Pmd).configureEach {
+    reports {
+        html.required = true
+        xml.required = true
+    }
+}

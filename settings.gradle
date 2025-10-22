@@ -1,0 +1,3 @@
+rootProject.name = 'insurance-connector'
+
+include('insurance-connector-domain', 'insurance-connector-infrastructure', 'insurance-connector-application')

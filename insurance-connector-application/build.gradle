@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management'
+}
+
+dependencies {
+    implementation project(':insurance-connector-domain')
+    implementation project(':insurance-connector-infrastructure')
+    implementation 'org.springframework.boot:spring-boot-starter'
+}
+
+springBoot {
+    mainClass = 'com.lulobank.insurance.InsuranceConnectorApplication'
+    buildInfo()
+}

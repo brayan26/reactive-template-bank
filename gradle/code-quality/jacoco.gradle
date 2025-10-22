@@ -1,0 +1,16 @@
+apply plugin: 'jacoco'
+
+// report task configuration for each subproject
+jacocoTestReport {
+
+    additionalSourceDirs.from = sourceSets.main.allSource.srcDirs
+    sourceDirectories.from = sourceSets.main.allSource.srcDirs
+    classDirectories.from = sourceSets.main.output
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = false
+    }
+}
+
+test.finalizedBy jacocoTestReport

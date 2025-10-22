@@ -1,0 +1,46 @@
+server:
+  port: 8180
+
+# Actuator
+management:
+  endpoints:
+    web:
+      base-path: /actuator/
+      exposure:
+        include: health,info,loggers,metrics,mappings
+
+# With this config you can check swagger at http://localhost:8180/insurance-connector/swagger-ui-custom.html
+springdoc:
+  webflux:
+    base-path: /insurance-connector
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui-custom.html
+    url: /v3/api-docs
+
+# Application
+spring:
+  profiles:
+    active: qa
+  lifecycle:
+    timeout-per-shutdown-phase: ${TIMEOUT_PER_SHUTDOWN_PHASE:30s}
+  application:
+    name: insurance-connector-neg
+  webflux:
+    base-path: /insurance-connector
+
+secrets-provider:
+  sdk:
+    host: ${SECRET_PROVIDER_HOST}
+    idp-url-token: ${IDP_URL_TOKEN}
+    idp-client-id: ${SECRETS_PROVIDER_IDP_CLIENT_ID}
+    idp-client-secrets: ${SECRETS_PROVIDER_IDP_CLIENT_SECRET}
+
+http-client:
+  #Timeout of requests
+  timeout: ${REQUEST_TIMEOUT:15}
+  #Number of retries if external communication fails
+  retry: ${REQUEST_RETRY:3}
+  #Duration in seconds between retries
+  duration: ${REQUEST_DURATION:2}

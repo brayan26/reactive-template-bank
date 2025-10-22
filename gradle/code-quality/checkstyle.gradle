@@ -1,0 +1,14 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = '10.4'
+    configFile = rootProject.file("gradle/code-quality/config/checkstyle/checkstyle.xml")
+    ignoreFailures = true
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required  = true
+    }
+}
