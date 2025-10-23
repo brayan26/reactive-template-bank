@@ -14,3 +14,11 @@ springBoot {
     mainClass = 'com.lulobank.insurance.InsuranceConnectorApplication'
     buildInfo()
 }
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    archiveClassifier.set("")
+}

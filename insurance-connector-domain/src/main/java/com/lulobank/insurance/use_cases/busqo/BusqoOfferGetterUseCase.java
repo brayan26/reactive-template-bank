@@ -14,7 +14,7 @@ public class BusqoOfferGetterUseCase {
         this.busqoOfferPort = busqoOfferPort;
     }
 
-    public Mono<SoatOfferLulo> execute(String idClient, BusqoRequest request, String token) {
-        return this.busqoOfferPort.getSoatOffer(idClient, request, token);
+    public Mono<SoatOfferLulo> execute(String idClient, BusqoRequest request) {
+        return this.busqoOfferPort.getSoatOffer(idClient, request);
     }
 }

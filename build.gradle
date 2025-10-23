@@ -18,7 +18,7 @@ buildscript {
 
     dependencies {
         classpath 'net.researchgate:gradle-release:2.6.0'
-        classpath('org.jfrog.buildinfo:build-info-extractor-gradle:$jfrogBuildInfoVersion')
+        classpath("org.jfrog.buildinfo:build-info-extractor-gradle:$jfrogBuildInfoVersion")
     }
 }
 
@@ -27,7 +27,7 @@ plugins {
     id 'java'
     id 'com.jfrog.artifactory' version '6.0.1'
     //id 'com.github.spotbugs' version '4.5.0'
-    id 'info.solidsoft.pitest' version '1.15.0' apply false
+    id 'info.solidsoft.pitest' version '1.19.0-rc.1' apply false
     id 'jacoco-report-aggregation'
     id 'base'
 }
@@ -57,8 +57,7 @@ release {
 
 allprojects {
     group = 'com.lulobank.insurance'
-    version = '1.0.0'
-
+    version = '1.0.1'
 
     repositories {
         mavenLocal()
@@ -90,9 +89,6 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'info.solidsoft.pitest'
 
-    sourceCompatibility = 21
-    targetCompatibility = 21
-
     dependencyManagement {
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:$springVersion"
@@ -100,7 +96,8 @@ subprojects {
     }
 
     dependencies {
-        implementation 'com.lulobank:secrets-provider-sdk-java:0.0.8'
+        //implementation 'com.lulobank:secrets-provider-sdk-java:0.0.8'
+        implementation 'com.lulobank:secrets-provider-spring-bootstrap:0.0.5'
         implementation 'org.springframework.boot:spring-boot-starter-webflux'
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
         compileOnly 'org.projectlombok:lombok'
@@ -121,6 +118,7 @@ subprojects {
         outputFormats = ['XML', 'HTML']
         timestampedReports = false
         reportDir = file("$rootDir/build/reports/pitest/${project.name}")
+        //reportDir = reporting.baseDirectory
         enableDefaultIncrementalAnalysis = true
         junit5PluginVersion = '1.2.0'
         historyInputLocation = file("$rootDir/pitest-history/input/${project.name}/history")
@@ -133,6 +131,7 @@ subprojects {
 
         excludedClasses = [
                 'com.lulobank.insurance.config.**',
+                'com.lulobank.insurance.model.**',
                 'com.lulobank.insurance.exceptions.**',
                 'com.lulobank.insurance.clients.**',
                 'com.lulobank.insurance.mapper.**',
@@ -193,14 +192,14 @@ tasks.register('jacocoRootReport', JacocoReport) {
 
     onlyIf { true }
 
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    '**/newrelic/**',
-                    '**/agents/**'
-            ])
-        }))
-    }
+//    afterEvaluate {
+//        classDirectories.setFrom(files(classDirectories.files.collect {
+//            fileTree(dir: it, exclude: [
+//                    '**/newrelic/**',
+//                    '**/agents/**'
+//            ])
+//        }))
+//    }
 }
 
 

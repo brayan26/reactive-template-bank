@@ -36,15 +36,15 @@ class BusqoOfferGetterUseCaseTest {
         BusqoRequest request = BusqoRequestMother.random();
         SoatOfferLulo expectedOffer = SoatOfferLuloMother.random();
 
-        when(busqoOfferPort.getSoatOffer(idClient, request, token))
+        when(busqoOfferPort.getSoatOffer(idClient, request))
                 .thenReturn(Mono.just(expectedOffer));
 
         // Act & Assert
-        StepVerifier.create(useCase.execute(idClient, request, token))
+        StepVerifier.create(useCase.execute(idClient, request))
                 .expectNext(expectedOffer)
                 .verifyComplete();
 
-        verify(busqoOfferPort).getSoatOffer(idClient, request, token);
+        verify(busqoOfferPort).getSoatOffer(idClient, request);
     }
 
     @Test
@@ -59,16 +59,16 @@ class BusqoOfferGetterUseCaseTest {
                 BuildErrorResponseUtil.build(UUID.randomUUID().toString(), UUID.randomUUID().toString())
         );
 
-        when(busqoOfferPort.getSoatOffer(idClient, request, token))
+        when(busqoOfferPort.getSoatOffer(idClient, request))
                 .thenReturn(Mono.error(error));
 
         // Act & Assert
-        StepVerifier.create(useCase.execute(idClient, request, token))
+        StepVerifier.create(useCase.execute(idClient, request))
                 .expectErrorMatches(throwable -> throwable instanceof GenericBadRequestException &&
                         throwable.getMessage().equals(errorMessage))
                 .verify();
 
-        verify(busqoOfferPort).getSoatOffer(idClient, request, token);
+        verify(busqoOfferPort).getSoatOffer(idClient, request);
     }
 
 }

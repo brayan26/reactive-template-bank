@@ -21,12 +21,12 @@ allprojects {
     version = rootProject.version
 
     artifactory {
-        contextUrl = '$jfrogContextUrl'
+        contextUrl = "$jfrogContextUrl"
         publish {
             repository {
-                setRepoKey(project.version.endsWith('-SNAPSHOT') ? 'libs-snapshot-local' : 'libs-release-local')
-                setUsername(jfrogUser)
-                setPassword(jfrogPassword)
+                repoKey = project.version.endsWith('-SNAPSHOT') ? 'libs-snapshot-local' : 'libs-release-local'
+                username = jfrogUser
+                password = jfrogPassword
             }
             defaults {
                 publications('mavenJava')

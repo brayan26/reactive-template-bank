@@ -5,5 +5,5 @@ import com.lulobank.insurance.model.busqo.BusqoRequest;
 import reactor.core.publisher.Mono;
 
 public interface IBusqoOfferPort {
-    Mono<SoatOfferLulo> getSoatOffer(String idClient, BusqoRequest request, String token);
+    Mono<SoatOfferLulo> getSoatOffer(String idClient, BusqoRequest request);
 }

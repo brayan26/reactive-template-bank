@@ -6,7 +6,7 @@ spotbugs {
     reportLevel = 'low'
     visitors = [ 'FindSqlInjection', 'SwitchFallthrough' ]
     omitVisitors = [ 'FindNonShortCircuit' ]
-    reportsDir = file("$buildDir/spotbugs")
+    reportsDir = file("$rootDir/spotbugs")
     includeFilter = file("include.xml")
     excludeFilter = rootProject.file("gradle/code-quality/config/spotbugs/excludeFilter.xml")
     onlyAnalyze = [ 'com.lulobank.insurance.*' ]

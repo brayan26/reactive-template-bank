@@ -1,13 +1,19 @@
 package com.lulobank.insurance;
 
+import com.lulobank.secretsprovider.bootstrap.SecretsProviderBeanFactoryPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 
 @SpringBootApplication(scanBasePackages = "com.lulobank.insurance")
-public class InsuranceConnectorApplication {
+@Import(SecretsProviderBeanFactoryPostProcessor.class)
+public final class InsuranceConnectorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InsuranceConnectorApplication.class, args);
-	}
+    private InsuranceConnectorApplication() {
+    }
+
+    public static void main(final String[] args) {
+        SpringApplication.run(InsuranceConnectorApplication.class, args);
+    }
 
 }

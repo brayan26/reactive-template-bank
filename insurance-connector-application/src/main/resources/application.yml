@@ -22,25 +22,41 @@ springdoc:
 # Application
 spring:
   profiles:
-    active: qa
+    active: ${ENV}
   lifecycle:
     timeout-per-shutdown-phase: ${TIMEOUT_PER_SHUTDOWN_PHASE:30s}
   application:
-    name: insurance-connector-neg
+    name: insurance-connector
   webflux:
     base-path: /insurance-connector
 
-secrets-provider:
-  sdk:
-    host: ${SECRET_PROVIDER_HOST}
-    idp-url-token: ${IDP_URL_TOKEN}
-    idp-client-id: ${SECRETS_PROVIDER_IDP_CLIENT_ID}
-    idp-client-secrets: ${SECRETS_PROVIDER_IDP_CLIENT_SECRET}
 
+# Custom properties #
 http-client:
-  #Timeout of requests
   timeout: ${REQUEST_TIMEOUT:15}
   #Number of retries if external communication fails
   retry: ${REQUEST_RETRY:3}
   #Duration in seconds between retries
   duration: ${REQUEST_DURATION:2}
+
+busqo:
+  config: ${BUSQO_CONFIG}
+  offerUrl: /Quote
+
+# Thycotic
+secrets-provider:
+  sdk:
+    http-client:
+      host: ${BASE_URL}
+      connection-timeout-in-seconds: 5
+      read-timeout-in-seconds: 10
+      max-idle-connections: 5
+      keep-alive-duration-in-seconds: 360
+      ttl-token-cache-in-seconds: 360
+    idp:
+      idp-url-token: ${IDP_URL_TOKEN}
+      idp-client-id: ${IDP_CLIENT_ID_SECRET_NAME}
+      idp-client-secret: ${IDP_CLIENT_SECRET_SECRET_NAME}
+  bootstrap:
+    app: insurance-connector
+    bucket-name: lbk-config-server-${ENV}
