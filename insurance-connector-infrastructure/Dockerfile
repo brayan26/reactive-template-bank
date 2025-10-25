@@ -4,6 +4,7 @@ WORKDIR /opt
 ENV USER=appuser
 ENV UID=10001
 ADD insurance-connector-application/build/libs/insurance-connector-application-*.jar /opt/app.jar
+ADD insurance-connector-application/build/resources/main/agents/*.jar /agents/.
 
 ENV TZ="America/Bogota"
 RUN adduser \

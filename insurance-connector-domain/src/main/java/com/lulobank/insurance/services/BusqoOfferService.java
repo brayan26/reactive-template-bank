@@ -9,10 +9,10 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class BusqoOfferService {
+public final class BusqoOfferService {
     private final BusqoOfferGetterUseCase busqoOfferGetterUseCase;
 
-    public Mono<SoatOfferLulo> getOffer(String idClient, BusqoRequest request) {
+    public Mono<SoatOfferLulo> getOffer(final String idClient, final BusqoRequest request) {
         return this.busqoOfferGetterUseCase.execute(idClient, request);
     }
 }

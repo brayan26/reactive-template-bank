@@ -16,10 +16,17 @@ import java.time.Duration;
 public class WebClientConfig {
     @Value("${http-client.timeout}")
     private int timeout;
+    @Value("${spring.profiles.active}")
+    private String env;
 
     @Bean
     public WebClient.Builder webclientBuilder() {
         Duration duration = Duration.ofSeconds(timeout);
+        if (!"prod".equalsIgnoreCase(env)) {
+            return WebClient.builder()
+                    .clientConnector(new ReactorClientHttpConnector(InsecureWebClientConfig.create(duration)));
+        }
+
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) duration.toMillis())
                 .doOnConnected(conn -> conn

@@ -20,5 +20,36 @@ jar {
 }
 
 bootJar {
+    dependsOn('copyJmxPrometheus')
     archiveClassifier.set("")
+}
+
+tasks.register('copyJmxPrometheus', Copy) {
+    from project(':insurance-connector-infrastructure').configurations.runtimeClasspath
+    into layout.buildDirectory.dir("resources/main/agents")
+    include "**/jmx-prometheus-${jmxPrometheus}.jar"
+    rename { String fileName -> fileName.replaceAll(/jmx-prometheus-\d+\.\d+\.\d?\.jar/, 'jmx-prometheus.jar')
+    }
+    outputs.dir layout.buildDirectory.dir("resources/main/agents")
+
+    doLast {
+        println "jmx-prometheus.jar copiado a: ${layout.buildDirectory.dir("resources/main/agents").get().asFile}"
+    }
+
+}
+
+tasks.named('processResources') {
+    mustRunAfter copyJmxPrometheus
+}
+
+tasks.named('classes') {
+    mustRunAfter copyJmxPrometheus
+}
+
+tasks.named('resolveMainClassName') {
+    mustRunAfter copyJmxPrometheus
+}
+
+tasks.named('bootJar') {
+    mustRunAfter copyJmxPrometheus
 }

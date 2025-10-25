@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class BusqoOfferGetterUseCase {
+public final class BusqoOfferGetterUseCase {
     private final IBusqoOfferPort busqoOfferPort;
 
-    public BusqoOfferGetterUseCase(IBusqoOfferPort busqoOfferPort) {
+    public BusqoOfferGetterUseCase(final IBusqoOfferPort busqoOfferPort) {
         this.busqoOfferPort = busqoOfferPort;
     }
 
-    public Mono<SoatOfferLulo> execute(String idClient, BusqoRequest request) {
+    public Mono<SoatOfferLulo> execute(final String idClient, final BusqoRequest request) {
         return this.busqoOfferPort.getSoatOffer(idClient, request);
     }
 }

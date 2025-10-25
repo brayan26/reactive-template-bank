@@ -7,6 +7,7 @@ buildscript {
         jfrogUser = System.getenv('JFROG_USER')
         jfrogPassword = System.getenv('JFROG_TOKEN')
         jfrogContextUrl = System.getenv('JFROG_CONTEXT_URL')
+        jmxPrometheus = '1.0.1'
     }
 
     repositories {
@@ -86,6 +87,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'info.solidsoft.pitest'
 
@@ -96,7 +98,6 @@ subprojects {
     }
 
     dependencies {
-        //implementation 'com.lulobank:secrets-provider-sdk-java:0.0.8'
         implementation 'com.lulobank:secrets-provider-spring-bootstrap:0.0.5'
         implementation 'org.springframework.boot:spring-boot-starter-webflux'
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -107,7 +108,34 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'io.projectreactor:reactor-test'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+        testImplementation 'org.mockito:mockito-junit-jupiter'
     }
+
+
+    jacoco {
+        toolVersion = jacocoVersion
+    }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+            html.required = true
+        }
+
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: [
+                        '**/com/lulobank/insurance/commons/**'
+                ])
+            }))
+        }
+
+    }
+
+    test.finalizedBy jacocoTestReport
+
 
     test {
         useJUnitPlatform()
@@ -118,7 +146,6 @@ subprojects {
         outputFormats = ['XML', 'HTML']
         timestampedReports = false
         reportDir = file("$rootDir/build/reports/pitest/${project.name}")
-        //reportDir = reporting.baseDirectory
         enableDefaultIncrementalAnalysis = true
         junit5PluginVersion = '1.2.0'
         historyInputLocation = file("$rootDir/pitest-history/input/${project.name}/history")
@@ -129,18 +156,17 @@ subprojects {
         useClasspathFile = true
         jvmArgs = ['-Xmx4G', '-Xms2G']
 
-        excludedClasses = [
-                'com.lulobank.insurance.config.**',
-                'com.lulobank.insurance.model.**',
-                'com.lulobank.insurance.exceptions.**',
-                'com.lulobank.insurance.clients.**',
-                'com.lulobank.insurance.mapper.**',
-                'com.lulobank.insurance.utils.**',
-                'com.lulobank.insurance.entry_points.**',
-                'com.lulobank.insurance.adapters.**',
-                'com.lulobank.insurance.validation.**',
-                'com.lulobank.insurance.server.**'
-        ]
+        excludedClasses = ['com.lulobank.insurance.config.**',
+                           'com.lulobank.insurance.model.**',
+                           'com.lulobank.insurance.commons.**',
+                           'com.lulobank.insurance.exceptions.**',
+                           'com.lulobank.insurance.clients.**',
+                           'com.lulobank.insurance.mapper.**',
+                           'com.lulobank.insurance.utils.**',
+                           'com.lulobank.insurance.entry_points.**',
+                           'com.lulobank.insurance.adapters.**',
+                           'com.lulobank.insurance.validation.**',
+                           'com.lulobank.insurance.server.**']
 
         excludedMethods = ['main', 'lambda$', 'builder', 'equals', 'hashCode', 'toString']
         exportLineCoverage = true
@@ -158,10 +184,8 @@ java {
     }
 }
 tasks.register('releaseBuild') {
-    dependsOn(
-            'reporting-xbc-domain:build',
-            'reporting-xbc-infrastructure:build'
-    )
+    dependsOn('reporting-xbc-domain:build',
+            'reporting-xbc-infrastructure:build')
 }
 
 tasks.register('publishCurrent') {
@@ -195,7 +219,6 @@ tasks.register('jacocoRootReport', JacocoReport) {
 //    afterEvaluate {
 //        classDirectories.setFrom(files(classDirectories.files.collect {
 //            fileTree(dir: it, exclude: [
-//                    '**/newrelic/**',
 //                    '**/agents/**'
 //            ])
 //        }))

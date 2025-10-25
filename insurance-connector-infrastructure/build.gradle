@@ -13,5 +13,7 @@ dependencies {
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.5.0'
     implementation 'org.apache.commons:commons-lang3:3.18.0'
+    //JMX Prometheus
+    implementation "com:jmx-prometheus:${jmxPrometheus}"
 
 }

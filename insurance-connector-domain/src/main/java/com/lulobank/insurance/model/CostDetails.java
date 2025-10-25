@@ -1,7 +1,9 @@
 package com.lulobank.insurance.model;
 
+import java.math.BigDecimal;
+
 public record CostDetails(
-        String totalValue,
+        BigDecimal totalValue,
         String currency
 ) {
 }

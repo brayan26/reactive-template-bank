@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lulobank.insurance.exceptions.GenericBadRequestException;
 import com.lulobank.insurance.exceptions.GenericNotFoundException;
 import com.lulobank.insurance.exceptions.GenericSemanticErrorException;
-import com.lulobank.insurance.util.BuildErrorResponseUtil;
+import com.lulobank.insurance.commons.util.BuildErrorResponseUtil;
 import com.lulobank.insurance.validation.ValidationMessages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
     private final ObjectMapper objectMapper;
 
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
+    public Mono<Void> handle(final ServerWebExchange exchange, final Throwable ex) {
         log.error("Error: {}", ex.getMessage());
 
         ErrorResponse errorResponse = mapExceptionToErrorResponse(ex);
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(errorResponse.status);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        DataBufferFactory bufferFactory = response.bufferFactory();
+        final DataBufferFactory bufferFactory = response.bufferFactory();
 
         try {
             byte[] body = objectMapper.writeValueAsBytes(errorResponse.body);

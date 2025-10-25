@@ -6,6 +6,6 @@ public record AdditionalProduct(
         boolean available,
         String planId,
         boolean hasIndependedTotalValue,
-        CostDetails costDetails
+        Quote quote
 ) {
 }

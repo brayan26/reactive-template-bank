@@ -17,8 +17,8 @@ public class BusqoOfferPortAdapter implements IBusqoOfferPort {
     private final MsBusqoRestClient client;
 
     @Override
-    public Mono<SoatOfferLulo> getSoatOffer(String idClient, BusqoRequest request) {
-        log.info("Starting Busqo remote call: {}", idClient);
+    public Mono<SoatOfferLulo> getSoatOffer(final String idClient, final BusqoRequest request) {
+        log.info("Starting Busqo remote call, idClient: {}", idClient);
         return this.client.post(request)
                 .map(response -> LuloOfferMapperFromBusqo.map(response, idClient));
     }

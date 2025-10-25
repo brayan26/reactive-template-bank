@@ -39,16 +39,26 @@ public class SoatOffersRouterFunction {
                             responses = {
                                     @ApiResponse(
                                             responseCode = "200",
-                                            description = "Ofertas encontradas",
+                                            description = "Oferta satisfactoria",
                                             content = @Content(mediaType = "application/json")
-                                    )
+                                    ),
+                                    @ApiResponse(
+                                            responseCode = "400",
+                                            description = "Errores de validacion ",
+                                            content = @Content(mediaType = "application/json")
+                                    ),
+                                    @ApiResponse(
+                                            responseCode = "422",
+                                            description = "Conflictos en los parametros de request Busqo",
+                                            content = @Content(mediaType = "application/json")
+                                    ),
                                     // add responses 400, 404, 422, 500
                             }
 
                     )
             )
     })
-    public RouterFunction<ServerResponse> offersRouterFunction(SoatOffersHandler handler) {
+    public RouterFunction<ServerResponse> offersRouterFunction(final SoatOffersHandler handler) {
         return RouterFunctions.route()
                 .POST("/api/v1/soat-offers", handler::getOffers)
                 .build();

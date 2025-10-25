@@ -20,7 +20,7 @@ public class DtoValidator {
         }
     }
 
-    public <T> void validate(T object) {
+    public <T> void validate(final T object) {
         Set<ConstraintViolation<T>> violations = this.validator.validate(object);
         if (!violations.isEmpty()) {
             Map<String, String> errors = violations.stream()
